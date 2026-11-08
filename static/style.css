@@ -191,7 +191,7 @@ input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--brand); 
 .model-card .title a:hover { color: var(--brand); }
 .model-card .tags { color: var(--muted); font-size: 12px; }
 .model-card .note { color: var(--muted); font-size: 12px; }
-.model-card .acts { display: flex; gap: 6px; align-items: center; margin-top: auto; padding-top: 6px; border-top: 1px solid var(--line); }
+.model-card .acts { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: auto; padding-top: 6px; border-top: 1px solid var(--line); }
 .stars { color: #f59e0b; font-size: 13px; letter-spacing: 1px; cursor: pointer; user-select: none; }
 .stars .off { color: #d7dce3; }
 .idea-item { display: flex; align-items: center; gap: 9px; padding: 7px 0; border-bottom: 1px dashed var(--line); }
@@ -240,7 +240,7 @@ input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--brand); 
 @media (max-width: 900px) {
   body { flex-direction: column; }
   #sidebar {
-    width: 100%; height: auto; position: fixed; bottom: 0; left: 0; z-index: 50;
+    width: 100%; height: auto; position: fixed; top: auto; bottom: 0; left: 0; z-index: 50;
     flex-direction: row; border-top: 1px solid rgba(255,255,255,.1);
   }
   #sidebar .logo, #sidebar .foot { display: none; }
@@ -251,4 +251,19 @@ input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--brand); 
   #app { padding: 14px 12px 30px; }
   #topbar { padding: 10px 14px; }
   .toolbar input[type="text"], .toolbar input[type="search"] { width: 130px; }
+}
+
+/* ---------- 手机端弹窗内动态行：两列堆叠，不再挤压 ---------- */
+.p-row select, .p-row input, .s-row select, .s-row input, #j-mrows select, #j-mrows input {
+  width: 100%; min-width: 0;
+}
+@media (max-width: 640px) {
+  .p-row { grid-template-columns: 1fr 1fr !important; }
+  .p-row .pr-mid { grid-column: 1 / -1; }
+  .p-row .pr-hintline { grid-column: 1 / -1; }
+  .s-row { grid-template-columns: 1fr 1fr auto !important; }
+  .s-row .s-pid { grid-column: 1 / -1; }
+  #j-mrows > div { grid-template-columns: 1fr 1fr auto !important; }
+  .modal { width: 100%; }
+  .modal .m-body { max-height: 62vh; }
 }
