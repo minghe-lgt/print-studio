@@ -3,6 +3,12 @@
 专为「自己买打印机、在闲鱼等平台卖成品」的小工作室做的轻量管理网站。
 **零依赖、双击就能用、数据全部存在自己电脑上。**
 
+## 📥 下载安装（给朋友）
+
+1. **一键下载**：[下载 ZIP 压缩包](https://github.com/minghe-lgt/print-studio/archive/refs/heads/main.zip) → 解压到任意文件夹
+2. **图文说明书**（在线直接看）：<https://minghe-lgt.github.io/print-studio/static/使用说明书.html>
+3. 装好 Python 后双击 `start.bat` 即可（详见说明书）
+
 ## 能做什么
 
 | 模块 | 说明 |
