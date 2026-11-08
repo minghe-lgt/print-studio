@@ -1257,7 +1257,7 @@ PAGES.models = async function pageModels() {
           <span class="chip ${M_CLS[x.status] || "gray"}">${h(x.status_label)}</span>
           <span class="stars" title="评分">${"★".repeat(x.rating)}<span class="off">${"★".repeat(5 - x.rating)}</span></span>
         </div>
-        ${x.tags ? `<div class="tags">🏷 ${h(x.tags)}</div>` : ""}
+        ${x.tags ? `<div class="tags">标签：${h(x.tags)}</div>` : ""}
         ${x.note ? `<div class="note">${h(x.note)}</div>` : ""}
         <div class="acts">
           <select class="m-st small" data-id="${x.id}" style="padding:3px 6px;font-size:12px">
