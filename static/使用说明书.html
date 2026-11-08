@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>打印小站 · 使用说明书</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖨️</text></svg>">
+<style>
+  :root { --brand: #ea580c; --ink: #1e293b; --muted: #64748b; --line: #e2e8f0; --soft: #fff7ed; }
+  * { box-sizing: border-box; }
+  body { font-family: system-ui, "Microsoft YaHei", "PingFang SC", sans-serif; color: var(--ink);
+         background: #f1f5f9; margin: 0; line-height: 1.85; font-size: 16px; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 28px 22px 60px; }
+  header.hero { background: linear-gradient(135deg, #ea580c, #f97316); color: #fff; border-radius: 18px;
+                padding: 30px 34px; margin-bottom: 26px; }
+  header.hero h1 { margin: 0 0 8px; font-size: 28px; }
+  header.hero p { margin: 0; opacity: .95; }
+  h2 { font-size: 21px; margin: 34px 0 12px; padding-left: 12px; border-left: 5px solid var(--brand); }
+  h3 { font-size: 17px; margin: 22px 0 8px; color: #c2410c; }
+  .card { background: #fff; border-radius: 14px; padding: 18px 22px; margin: 14px 0;
+          box-shadow: 0 1px 3px rgba(15,23,42,.08); }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--soft); color: #9a3412; white-space: nowrap; }
+  .step { display: flex; gap: 12px; margin: 10px 0; align-items: flex-start; }
+  .step .n { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--brand);
+             color: #fff; display: flex; align-items: center; justify-content: center;
+             font-size: 14px; font-weight: 700; margin-top: 3px; }
+  .tip { background: var(--soft); border: 1px solid #fed7aa; border-radius: 10px;
+         padding: 10px 14px; font-size: 14.5px; margin: 10px 0; }
+  .warn { background: #fef2f2; border: 1px solid #fecaca; }
+  kbd { background: #0f172a; color: #fff; border-radius: 6px; padding: 1px 8px; font-size: 13.5px; }
+  code { background: #f1f5f9; border-radius: 5px; padding: 1px 7px; font-size: 14px; }
+  .toc { columns: 2; font-size: 15px; }
+  .toc a { color: #c2410c; text-decoration: none; }
+  @media (max-width: 640px) { .toc { columns: 1; } body { font-size: 15px; } }
+  @media print { body { background: #fff; } .card { box-shadow: none; border: 1px solid var(--line); } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>🖨️ 打印小站 · 使用说明书</h1>
+  <p>专为 3D 打印小工作室做的记账 + 库存 + 选模型工具 · 双击就能用，数据都在自己电脑上</p>
+</header>
+
+<div class="card">
+  <b>📖 目录</b>
+  <div class="toc">
+    <p>1. <a href="#start">第一次怎么打开</a></p>
+    <p>2. <a href="#daily">每天就做三件事</a></p>
+    <p>3. <a href="#buy">买了材料怎么记</a></p>
+    <p>4. <a href="#print">打印完怎么记</a></p>
+    <p>5. <a href="#sell">卖货怎么记（含发货）</a></p>
+    <p>6. <a href="#model">怎么挑模型 / 收藏模型</a></p>
+    <p>7. <a href="#price">卖多少钱怎么算</a></p>
+    <p>8. <a href="#report">怎么看赚了还是亏了</a></p>
+    <p>9. <a href="#backup">数据备份与恢复</a></p>
+    <p>10. <a href="#faq">常见问题</a></p>
+  </div>
+</div>
+
+<h2 id="start">一、第一次怎么打开</h2>
+<div class="card">
+  <div class="step"><div class="n">1</div><div>电脑装一次 <b>Python</b>（去 python.org 下载，安装时<b>务必勾选 Add python.exe to PATH</b>）</div></div>
+  <div class="step"><div class="n">2</div><div>以后每次想用，<b>双击 <code>start.bat</code></b>，浏览器会自动打开网站</div></div>
+  <div class="step"><div class="n">3</div><div>用完直接关掉黑色窗口就行，数据不会丢</div></div>
+  <div class="tip">📱 <b>手机也能用</b>：手机连<b>同一个 WiFi</b>，用启动时黑窗口里显示的「手机访问」网址打开（第一次会弹防火墙提示，点「允许访问」）。</div>
+  <div class="tip">🧹 第一次打开里有几条带「示例」的数据，是给你演示用的，看懂之后随手删掉或改掉就行。</div>
+</div>
+
+<h2 id="daily">二、每天就做三件事</h2>
+<div class="card">
+  <p>别被十个页面吓到，其实日常只有三个动作，每个都有捷径：</p>
+  <table>
+    <tr><th>什么时候</th><th>做什么</th><th>在哪点</th></tr>
+    <tr><td>买了耗材 / 配件</td><td>记一笔采购，到货后点「确认收货入库」</td><td>首页「🛒 记一笔采购」一步直达</td></tr>
+    <tr><td>打印完成了</td><td>任务点「完成」，材料和成品<b>自动</b>进出库</td><td>首页「🖨️ 新建打印任务」</td></tr>
+    <tr><td>卖出去了</td><td>记一笔销售，顺手填快递单号</td><td>首页「💰 记一笔销售」一步直达</td></tr>
+  </table>
+  <div class="tip">💰 首页最上面四张卡就是今天的答案：卖了多少、赚了多少、库存值多少钱。缺料、欠货、该保养打印机，都会在「待办提醒」里喊你。</div>
+</div>
+
+<h2 id="buy">三、买了材料怎么记</h2>
+<div class="card">
+  <div class="step"><div class="n">1</div><div>第一次用先去「🧱 物料库存」→「新增物料」，把常用耗材建一遍：名称（如 PLA 玛雅棕）、类别选「耗材」、<b>每卷克重</b>（如 1000）、单价。</div></div>
+  <div class="step"><div class="n">2</div><div>下单买了就去「🛒 采购记录」→「新增采购单」。耗材<b>默认按卷填</b>：填 2 卷、每卷 20 元，系统自动换算成克和元/克，不用自己算。</div></div>
+  <div class="step"><div class="n">3</div><div>快递到了，回到采购单点 <b>「✅ 确认收货入库」</b> —— 材料自动入库，以后打印消耗、库存预警都靠它。</div></div>
+  <div class="tip">⚠️ 耗材的库存按「克」记（会自动显示 ≈ 几卷），因为打印是按克耗料的；配件、工具按「个」记。</div>
+</div>
+
+<h2 id="print">四、打印完怎么记</h2>
+<div class="card">
+  <div class="step"><div class="n">1</div><div>开打之前：去「🖨️ 打印任务」→「新建打印任务」，写标题、选打印机、填<b>预计耗材克数</b>（切片软件里能看到）。</div></div>
+  <div class="step"><div class="n">2</div><div>打完之后：点 <b>「✅ 完成」</b>，填成品几件、废件几件、耗时。系统自动：扣减材料 → <b>成品入库</b> → 算出单件成本。</div></div>
+  <div class="step"><div class="n">3</div><div>打坏了就填废件数，经营分析页会统计废件率，太高会提醒你。</div></div>
+  <div class="tip">🖨️ 打印机累计打印到一定小时数（默认 200h，可在设置里改），首页会提醒你保养、检查喷嘴。</div>
+</div>
+
+<h2 id="sell">五、卖货怎么记（含发货）</h2>
+<div class="card">
+  <div class="step"><div class="n">1</div><div>出单了：首页「💰 记一笔销售」，选商品（会显示库存）、填单价（商品设过价会自动带出）。系统自动扣库存、算利润。</div></div>
+  <div class="step"><div class="n">2</div><div>发货后：销售列表点 <b>「📦 发货」</b>，填快递单号。看板会一直显示「待发货 N 单」，不会漏发。</div></div>
+  <div class="step"><div class="n">3</div><div><b>先接单后打印？</b>库存不够也能录，系统会问「按预售记录吗」，确认后进「欠货清单」，打印入库后自动冲销。</div></div>
+  <div class="tip">🐟 去看看「📦 成品商品」页：商品可以 <b>Ctrl+V 粘贴图片</b>、<b>📝 一键生成闲鱼文案</b>（材料、包装、售后话术都写好了）、把闲鱼链接贴回来以后一键打开改价。</div>
+</div>
+
+<h2 id="model">六、怎么挑模型 / 收藏模型</h2>
+<div class="card">
+  <p>都在「🌐 模型收藏」页：</p>
+  <table>
+    <tr><th>想做什么</th><th>怎么点</th></tr>
+    <tr><td>看看现在什么火</td><td>「🔥 站内刷模型」→ 点「搜一下」= 总热榜；填关键词（如 dragon、收纳）= 站内搜索，可按热门/最新/评分/最多人做排序，喜欢直接「＋收藏」</td></tr>
+    <tr><td>去各大模型站逛</td><td>「🔥 逛热门挑货」一键打开 MakerWorld、Printables、Thingiverse、Cults3D 的热门页</td></tr>
+    <tr><td>有链接想存起来</td><td>「＋添加模型收藏」→ 粘贴链接 → 点「🔍 自动获取」自动填名称和封面图</td></tr>
+    <tr><td>自己不会建模</td><td>「🤖 AI 直接生成模型」：丢一张图片就能生成 3D 模型（混元3D / TRELLIS / Tripo / Meshy）</td></tr>
+    <tr><td>管理打印节奏</td><td>收藏的模型有状态：想打 → 打印中 → 已上架；随手记「💡 建模点子板」</td></tr>
+  </table>
+</div>
+
+<h2 id="price">七、卖多少钱怎么算</h2>
+<div class="card">
+  <p>去「🧮 定价计算」：填克重、时长、选材料和打印机（电价、机时费在⚙️设置里配好一次就行），右边直接给出成本明细和建议售价。</p>
+  <p>建议：成本 × 2 起步（目标利润率 100%），再点「取整到 x.9」——比如成本 4.4 元就卖 8.9 元。觉得卖不动再往下调，<b>别低于成本</b>。</p>
+</div>
+
+<h2 id="report">八、怎么看赚了还是亏了</h2>
+<div class="card">
+  <p><b>📊 经营看板</b> = 今天的状态；<b>📈 经营分析</b> = 这几个月的账：</p>
+  <ul>
+    <li>近 6 个月销售 / 采购 / 利润趋势</li>
+    <li>畅销商品排行 —— 该多打什么一目了然</li>
+    <li>渠道占比 —— 闲鱼、微信哪个来钱多</li>
+    <li>废件率、毛利率 —— 自动给经营建议</li>
+  </ul>
+  <p>每一笔操作在「📜 全站流水」都能查到，也能导出 Excel（CSV）。</p>
+</div>
+
+<h2 id="backup">九、数据备份与恢复</h2>
+<div class="card">
+  <div class="tip">✅ <b>好消息：每次启动软件都会自动备份</b>到 <code>data\backups\</code> 文件夹，保留最近 10 份，基本不用操心。</div>
+  <p><b>手动备份</b>：点右上角「💾 备份」，把下载的 .db 文件存到网盘/U盘。</p>
+  <p><b>恢复</b>：关掉程序 → 把备份文件重命名为 <code>studio.db</code> → 替换 <code>data</code> 文件夹里的同名文件 → 重新打开。</p>
+</div>
+
+<h2 id="faq">十、常见问题</h2>
+<div class="card">
+  <p><b>Q：双击 start.bat 一闪就没了？</b><br>A：多半没装 Python 或没勾 PATH，重装 Python 勾上即可。</p>
+  <p><b>Q：手机打不开网站？</b><br>A：确认连的同一个 WiFi；第一次运行时防火墙弹窗要点「允许」；不行就把防火墙里 Python 的入站规则放开。</p>
+  <p><b>Q：提示「端口已被占用」？</b><br>A：说明网站已经在运行了，直接浏览器打开 <code>http://127.0.0.1:8765</code>。</p>
+  <p><b>Q：单价到底填什么？</b><br>A：采购单里耗材<b>默认按卷</b>（填几卷、每卷多少钱）；想按克填就点旁边的「按克输入」切换。</p>
+  <p><b>Q：示例数据能删吗？</b><br>A：能，全部可编辑可删除，删干净就是空白账本。</p>
+  <p><b>Q：录错了怎么办？</b><br>A：销售可删（库存自动返还）；材料库存错了用「⚖️盘点」改成正确值；已完成的打印任务不能删（涉及库存流水），录错数量可以再打印一单冲回来，或用盘点修正成品。</p>
+  <p class="warn">⚠️ <b>安全提醒</b>：本网站只适合在自己家 / 工作室的 WiFi 里用，不要把端口开放到公网。</p>
+</div>
+
+<div style="text-align:center;color:var(--muted);font-size:13.5px;margin-top:30px">
+  打印小站 · 祝生意兴隆 🧧 · 本页可直接 Ctrl+P 打印
+</div>
+
+</div>
+</body>
+</html>
