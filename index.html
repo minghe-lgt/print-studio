@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>打印小站 · 工作室管理</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖨️</text></svg>">
+<link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+<aside id="sidebar">
+  <div class="logo"><span class="dot"></span><span id="logo-name">打印小站</span></div>
+  <nav id="nav"></nav>
+  <div class="foot">数据存于本机<br>请定期备份</div>
+</aside>
+<div id="main">
+  <header id="topbar">
+    <h1 id="page-title">经营看板</h1>
+    <div class="btns">
+      <button class="btn small" id="btn-manual" title="图文使用说明书">📖 说明书</button>
+      <button class="btn small" id="btn-backup" title="下载数据库备份文件">💾 备份</button>
+      <button class="btn small" id="btn-settings" title="店名、电价等设置">⚙️ 设置</button>
+    </div>
+  </header>
+  <main id="app"></main>
+</div>
+<div id="modal-root"></div>
+<div id="toast-root"></div>
+<script src="static/localdb.js"></script>
+<script src="static/app.js"></script>
+</body>
+</html>
