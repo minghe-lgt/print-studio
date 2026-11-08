@@ -12,7 +12,15 @@ const num = n => {
   return Number.isInteger(r) ? String(r) : String(r);
 };
 
+/* 运行模式：true = 网页版（数据存浏览器）；false = 本机服务器版 */
+let LOCAL_MODE = false;
+
 async function api(path, method = "GET", body) {
+  if (LOCAL_MODE && window.LocalAPI) {
+    const r = await window.LocalAPI.handle(method, path, body);
+    if (r && r.__status__ >= 400) throw new Error(r.error || `请求失败（${r.__status__}）`);
+    return r;
+  }
   const opt = { method, headers: {} };
   if (body !== undefined) {
     opt.headers["Content-Type"] = "application/json";
@@ -23,6 +31,19 @@ async function api(path, method = "GET", body) {
   try { data = await res.json(); } catch (e) { /* ignore */ }
   if (!res.ok) throw new Error(data.error || `请求失败（${res.status}）`);
   return data;
+}
+
+async function detectLocalMode() {
+  if (location.protocol === "file:") return true;
+  if (location.hostname.endsWith(".github.io")) return true;
+  if (location.search.includes("local=1")) return true;
+  try {
+    const c = new AbortController();
+    const t = setTimeout(() => c.abort(), 1500);
+    const r = await fetch("/api/settings", { signal: c.signal });
+    clearTimeout(t);
+    return !r.ok;
+  } catch (e) { return true; }
 }
 
 function toast(msg, ok = true) {
@@ -124,6 +145,16 @@ async function openSettings() {
     title: "设置",
     body: `
       <div class="field"><label>店名</label><input id="s-shop" value="${h(s.shop_name)}"></div>
+      ${LOCAL_MODE ? `
+      <div class="field" style="background:var(--soft);border:1px solid #fed7aa;border-radius:10px;padding:10px 14px">
+        <label style="color:var(--brand);font-weight:600">🌐 网页版数据管理</label>
+        <div class="hint" style="line-height:1.8">数据保存在<b>本浏览器</b>里：换电脑、换浏览器、清理浏览器缓存都会丢失！请定期导出备份。</div>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+          <button class="btn small" id="s-export">⬇️ 导出数据 (JSON)</button>
+          <button class="btn small" id="s-import">⬆️ 导入数据</button>
+          <input type="file" id="s-import-file" accept=".json,application/json" style="display:none">
+        </div>
+      </div>` : ""}
       <div class="form-row">
         <div class="field"><label>电价（元/度）</label><input id="s-elec" type="number" step="any" value="${h(s.electricity_price)}"></div>
         <div class="field"><label>机时费（元/小时）</label><input id="s-machine" type="number" step="any" value="${h(s.machine_rate)}"></div>
@@ -133,6 +164,17 @@ async function openSettings() {
       <p style="color:var(--muted);font-size:12.5px;line-height:1.7">💡 恢复数据：把备份的 .db 文件重命名为 studio.db，替换 data 文件夹里的同名文件（先关闭程序再替换）。<br>🔒 本站仅建议局域网使用，请勿暴露到公网。</p>`,
     footer: `<button class="btn primary" id="s-save">保存</button>`,
   });
+  if (LOCAL_MODE) {
+    $("#s-export", m.el).onclick = () => { window.LocalAPI.backup(); toast("已导出 JSON 数据"); };
+    $("#s-import", m.el).onclick = () => $("#s-import-file", m.el).click();
+    $("#s-import-file", m.el).onchange = async e => {
+      const f = e.target.files[0];
+      if (!f) return;
+      if (!(await confirmDlg("导入会覆盖网页版当前全部数据，确定继续吗？"))) return;
+      try { window.LocalAPI.importJSON(await f.text()); }
+      catch (err) { toast(err.message, false); }
+    };
+  }
   bindSave($("#s-save", m.el), async () => {
     const r = await api("/api/settings", "PUT", {
       shop_name: $("#s-shop", m.el).value,
@@ -1326,7 +1368,7 @@ PAGES.models = async function pageModels() {
       box.innerHTML = `
         <div class="hot-grid">${r.items.map(x => `
           <div class="hot-card">
-            <div class="img">${x.image ? `<img src="/api/thumb?u=${encodeURIComponent(x.image)}" loading="lazy" onerror="this.style.display='none'">` : "🧊"}</div>
+            <div class="img">${x.image ? `<img src="${LOCAL_MODE ? h(x.image) : "/api/thumb?u=" + encodeURIComponent(x.image)}" loading="lazy" onerror="this.style.display='none'">` : "🧊"}</div>
             <div class="nm" title="${h(x.name)}">${h(x.name)}</div>
             <div class="meta">❤️ ${num(x.likes)} · 📥 ${num(x.downloads)}</div>
             <div class="acts">
@@ -1591,7 +1633,7 @@ PAGES.logs = async function pageLogs() {
           ${Object.keys({
     materials: 1, purchases: 1, stock_movements: 1, print_jobs: 1,
     products: 1, sales: 1, model_links: 1, operation_log: 1,
-  }).map(t => `<a class="btn small" href="/api/export/csv?table=${t}" style="justify-content:flex-start">${t}</a>`).join("")}
+  }).map(t => `<button class="btn small" data-export="${t}" style="justify-content:flex-start">${t}</button>`).join("")}
         </div>
       </details>
     </div>
@@ -1602,14 +1644,33 @@ PAGES.logs = async function pageLogs() {
       : `<div class="empty">暂无记录</div>`}
     </div>`;
   $("#lg-module").onchange = e => { f.module = e.target.value; refresh(); };
+  $$("[data-export]").forEach(b => b.onclick = () => {
+    if (LOCAL_MODE) { window.LocalAPI.exportCSV(b.dataset.export); toast("已导出 CSV"); }
+    else location.href = "/api/export/csv?table=" + b.dataset.export;
+  });
 };
 
 /* ================= 启动 ================= */
 async function init() {
+  LOCAL_MODE = await detectLocalMode();
   $("#nav").innerHTML = NAV.map(n =>
     `<a href="#/${n.key}" data-key="${n.key}"><span>${n.icon}</span><span>${n.label}</span></a>`).join("");
-  $("#btn-backup").onclick = () => { location.href = "/api/backup"; toast("正在下载数据库备份…"); };
-  $("#btn-manual").onclick = () => window.open("/使用说明书.html", "_blank");
+  if (LOCAL_MODE) {
+    const chip = document.createElement("span");
+    chip.className = "chip gray";
+    chip.style.cssText = "margin-left:10px;font-weight:400";
+    chip.textContent = "网页版 · 数据存于本浏览器";
+    chip.title = "换浏览器或清理缓存前，请在「设置」里导出数据备份";
+    $("#page-title").after(chip);
+    document.title = "打印小站（网页版）";
+  }
+  $("#btn-backup").onclick = () => {
+    if (LOCAL_MODE) { window.LocalAPI.backup(); toast("数据已导出（JSON 文件，请收好）"); }
+    else { location.href = "/api/backup"; toast("正在下载数据库备份…"); }
+  };
+  $("#btn-manual").onclick = () => window.open(LOCAL_MODE
+    ? "static/使用说明书.html"
+    : "/使用说明书.html", "_blank");
   $("#btn-settings").onclick = openSettings;
   window.addEventListener("hashchange", route);
   try {
