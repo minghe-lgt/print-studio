@@ -638,17 +638,17 @@
     },
     async handle(method, path, body) {
       const db = load();
-      let mutated = false;
+      // 先剥掉查询串再匹配路由（Python 版行为一致）
+      const qi = path.indexOf("?");
+      const qs = {};
+      if (qi >= 0) for (const [k, v] of new URLSearchParams(path.slice(qi + 1))) qs[k] = v;
+      const clean = qi >= 0 ? path.slice(0, qi) : path;
       for (const r of routes) {
         if (r.method !== method) continue;
-        const m = path.match(r.re);
+        const m = clean.match(r.re);
         if (!m) continue;
         try {
-          const qs = {};
-          const qi = path.indexOf("?");
-          if (qi >= 0) for (const [k, v] of new URLSearchParams(path.slice(qi + 1))) qs[k] = v;
           const out = await r.fn(db, m, body || {}, qs);
-          mutated = true;
           save(db);
           return out === undefined ? { __status__: 200 } : out;
         } catch (e) {

@@ -1663,6 +1663,8 @@ async function init() {
     chip.title = "换浏览器或清理缓存前，请在「设置」里导出数据备份";
     $("#page-title").after(chip);
     document.title = "打印小站（网页版）";
+    const foot = document.querySelector("#sidebar .foot");
+    if (foot) foot.innerHTML = "数据存于本浏览器<br>请在设置里导出备份";
   }
   $("#btn-backup").onclick = () => {
     if (LOCAL_MODE) { window.LocalAPI.backup(); toast("数据已导出（JSON 文件，请收好）"); }
