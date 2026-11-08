@@ -53,3 +53,7 @@
 - 闲鱼自动客服/自动发货：可参考开源项目 [xianyu-auto-reply](https://github.com/zhinianboke/xianyu-auto-reply)（需登录账号 Cookie，有风控风险，自行评估）
 - 耗材与打印机联动自动扣料：可参考 [Spoolman](https://github.com/Donkie/Spoolman)
 - 模型文件本地管理：可参考 [Manyfold](https://github.com/manyfold3d/manyfold)
+
+## 开源协议
+
+本项目基于 [MIT License](LICENSE) 开源，欢迎自用、修改、分享。
