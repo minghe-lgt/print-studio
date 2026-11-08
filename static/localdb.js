@@ -453,7 +453,7 @@
     const title = (body.title || "").trim(), url = (body.url || "").trim();
     if (!title) throw err("请填写模型名称");
     if (!url.startsWith("http://") && !url.startsWith("https://")) throw err("链接需以 http(s):// 开头");
-    Object.assign(row, { title, url, source: (body.source || "").trim() || row.source, image_url: safeUrl(body.image_url, "图片链接"), tags: (body.tags || "").trim(), status: ["want", "printing", "listed", "dropped"].includes(body.status) ? body.status : row.status, rating: Math.max(0, Math.min(5, parseInt(fnum(body.rating)))), note: (body.note || "").trim() });
+    Object.assign(row, { title, url, source: (body.source || "").trim() || guessSource(url), image_url: safeUrl(body.image_url, "图片链接"), tags: (body.tags || "").trim(), status: ["want", "printing", "listed", "dropped"].includes(body.status) ? body.status : row.status, rating: Math.max(0, Math.min(5, parseInt(fnum(body.rating)))), note: (body.note || "").trim() });
     logOp(db, "模型", "修改", `「${title}」`);
     return { item: row };
   });
